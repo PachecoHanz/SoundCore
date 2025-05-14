@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SoundCore Launchpad</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()">
+  <i class="fas fa-bars"></i>
+</button>
+
+<aside class="sidebar closed" id="sidebar">
+  <h2>Menu</h2>
+  <ul>
+    <li><button class="nav-btn">🏠 Home</button></li>
+    <li><button class="nav-btn">ℹ️ About</button></li>
+  </ul>
+
+  <h2>Sound Library</h2>
+  <ul id="sound-library">
+    <li class="sound-item" draggable="true" data-src="sounds/kick.wav">Kick</li>
+    <li class="sound-item" draggable="true" data-src="sounds/snare.wav">Snare</li>
+    <li class="sound-item" draggable="true" data-src="sounds/hihat.wav">Hi-Hat</li>
+    <li class="sound-item" draggable="true" data-src="sounds/clap.wav">Clap</li>
+    <li class="sound-item" draggable="true" data-src="sounds/bass.wav">Bass</li>
+    <li class="sound-item" draggable="true" data-src="sounds/perc.wav">Perc</li>
+    <li class="sound-item" draggable="true" data-src="sounds/synth.wav">Synth</li>
+  </ul>
+</aside>
+
+<main>
+  <h1>Play Launchpad</h1>
+
+  <div class="controls-panel">
+    <button id="toggle-play" class="btn green">Play</button>
+    <label for="tempo">Tempo (BPM):</label>
+    <input type="range" id="tempo" min="60" max="180" value="120" />
+    <span id="tempo-display">120</span>
+    <label for="volume">Volume:</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
+    <input type="file" id="upload" accept="audio/*" />
+    <button id="save-pattern" class="btn blue">Save Pattern</button>
+    <button id="load-pattern" class="btn blue">Load Pattern</button>
+    <button id="download-pattern" class="btn blue">Download Pattern</button>
+    <button id="reset-sounds" class="btn red">Reset All Sounds</button>
+
+</div>
+
+  <div class="launchpad-container">
+    <div class="top-controls">
+      <button class="btn nav orange">⬆</button>
+      <button class="btn nav orange">⬇</button>
+      <button class="btn nav orange">⬅</button>
+      <button class="btn nav orange">▶</button>
+      <button class="btn nav red">⏮ 8</button>
+      <button class="btn nav red">⏭ 8</button>
+      <button class="btn nav green">Load</button>
+      <button class="btn nav blue">Next</button>
+    </div>
+
+    <div class="grid-wrapper">
+      <div class="grid" id="launchpad-grid"></div>
+      <div class="side-controls">
+        <button class="btn side red">Clear</button>
+        <button class="btn side red">Clear</button>
+        <button class="btn side red">Clear</button>
+        <button class="btn side red">Clear</button>
+        <button class="btn side red">Clear</button>
+        <button class="btn side red">Clear</button>
+        <button class="btn side red">Clear</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

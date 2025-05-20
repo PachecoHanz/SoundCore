@@ -24,6 +24,17 @@ logo.id = "logo-header";
 logo.innerHTML = `<img src="images/soundcorelogo.png" alt="SoundCore Logo">`;
 document.body.insertBefore(logo, document.body.firstChild);
 
+// ✅ FIX: Enable audio after user interaction
+document.addEventListener("click", () => {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (AudioContext) {
+    const context = new AudioContext();
+    if (context.state === "suspended") {
+      context.resume();
+    }
+  }
+}, { once: true });
+
 // Create buttons and enable drop targets
 for (let row = 0; row < rows; row++) {
   buttons[row] = [];
@@ -92,7 +103,7 @@ function playStep() {
     if (btn.classList.contains("active")) {
       const audio = buttonSounds[id]?.cloneNode() || defaultSounds[id]?.cloneNode();
       if (audio) {
-        audio.volume = volumeSlider.value;
+        audio.volume = parseFloat(volumeSlider?.value || 0.7);
         audio.play();
       }
     }

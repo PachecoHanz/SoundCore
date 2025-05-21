@@ -14,10 +14,15 @@
 </button>
 
 <aside class="sidebar closed" id="sidebar">
+    <br>
+    <br>
+   <!-- ✅ SoundCore Logo Section -->
+  <div id="sidebar-logo">
+    <img src="images/soundcorelogo.png" alt="SoundCore Logo" />
+  </div>
+  
   <h2>Menu</h2>
-  <ul>
-    <li><button class="nav-btn">🏠 Home</button></li>
-    <li><button class="nav-btn">ℹ️ About</button></li>
+  <ul> 
   </ul>
 
   <h2>Sound Library</h2>
@@ -27,8 +32,10 @@
     <li class="sound-item" draggable="true" data-src="sounds/mmm.wav">mmm</li>
     <li class="sound-item" draggable="true" data-src="sounds/snare1.wav">Snare 1</li>
     <li class="sound-item" draggable="true" data-src="sounds/snare2.wav">Snare 2</li>
-    <li class="sound-item" draggable="true" data-src="sounds/wave.wav">Perc</li>
-    <li class="sound-item" draggable="true" data-src="sounds/synth.wav">Synth</li>
+    <li class="sound-item" draggable="true" data-src="sounds/snare3.wav">Snare 3</li>
+    <li class="sound-item" draggable="true" data-src="sounds/snare4.wav">Snare 4</li>
+    <li class="sound-item" draggable="true" data-src="sounds/snare5.wav">Snare 5</li>
+    <li class="sound-item" draggable="true" data-src="sounds/snare6.wav">Snare 6</li>
     <li class="sound-item" draggable="true" data-src="sounds/kick1.wav">Kick 1</li>
     <li class="sound-item" draggable="true" data-src="sounds/kick2.wav">Kick 2</li>
     <li class="sound-item" draggable="true" data-src="sounds/kick3.wav">Kick 3</li>
@@ -37,6 +44,33 @@
     <li class="sound-item" draggable="true" data-src="sounds/toploop1.wav">Top Loop 1</li>
     <li class="sound-item" draggable="true" data-src="sounds/toploop2.wav">Top Loop 2</li>
     <li class="sound-item" draggable="true" data-src="sounds/toploop3.wav">Top Loop 3</li>
+    <li class="sound-item" draggable="true" data-src="sounds/toploop4.wav">Top Loop 4</li>
+    <li class="sound-item" draggable="true" data-src="sounds/toploop5.wav">Top Loop 5</li>
+    <li class="sound-item" draggable="true" data-src="sounds/toploop6.wav">Top Loop 6</li>
+    <li class="sound-item" draggable="true" data-src="sounds/aminpad1.wav">AminPad 1</li>
+    <li class="sound-item" draggable="true" data-src="sounds/aminpad2.wav">AminPad 2</li>
+    <li class="sound-item" draggable="true" data-src="sounds/aminpad3.wav">AminPad 3</li>
+    <li class="sound-item" draggable="true" data-src="sounds/aminpad4.wav">AminPad 4</li>
+    <li class="sound-item" draggable="true" data-src="sounds/aminpad5.wav">AminPad 5</li>
+    <li class="sound-item" draggable="true" data-src="sounds/aminpad6.wav">AminPad 6</li>
+    <li class="sound-item" draggable="true" data-src="sounds/aminpad7.wav">AminPad 7</li>
+    <li class="sound-item" draggable="true" data-src="sounds/vocal1.wav">Vocal 1</li>
+    <li class="sound-item" draggable="true" data-src="sounds/vocal2.wav">Vocal 2</li>
+    <li class="sound-item" draggable="true" data-src="sounds/vocal4.wav">Vocal 3</li>
+    <li class="sound-item" draggable="true" data-src="sounds/vocal5.wav">Vocal 4</li>
+    <li class="sound-item" draggable="true" data-src="sounds/vocal6.wav">Vocal 5</li>
+    <li class="sound-item" draggable="true" data-src="sounds/vocal7.wav">Vocal 6</li>
+    <li class="sound-item" draggable="true" data-src="sounds/laser1.wav">Laser 1</li>
+    <li class="sound-item" draggable="true" data-src="sounds/laser2.wav">Laser 2</li>
+    <li class="sound-item" draggable="true" data-src="sounds/laser3.wav">Laser 3</li>
+    <li class="sound-item" draggable="true" data-src="sounds/laser4.wav">Laser 4</li>
+    <li class="sound-item" draggable="true" data-src="sounds/laser5.wav">Laser 5</li>
+  </ul>
+
+  <!-- ✅ Saved Patterns Section -->
+  <h2>Saved Patterns</h2>
+  <ul id="saved-patterns">
+    <!-- Patterns will be added here dynamically -->
   </ul>
 </aside>
 
@@ -55,8 +89,7 @@
     <button id="load-pattern" class="btn blue">Load Pattern</button>
     <button id="download-pattern" class="btn blue">Download Pattern</button>
     <button id="reset-sounds" class="btn red">Reset All Sounds</button>
-
-</div>
+  </div>
 
   <div class="launchpad-container">
     <div class="top-controls">
@@ -73,13 +106,13 @@
     <div class="grid-wrapper">
       <div class="grid" id="launchpad-grid"></div>
       <div class="side-controls">
-        <button class="btn side red">Clear</button>
-        <button class="btn side red">Clear</button>
-        <button class="btn side red">Clear</button>
-        <button class="btn side red">Clear</button>
-        <button class="btn side red">Clear</button>
-        <button class="btn side red">Clear</button>
-        <button class="btn side red">Clear</button>
+        <button class="btn side red" data-row="0">Clear</button>
+        <button class="btn side red" data-row="1">Clear</button>
+        <button class="btn side red" data-row="2">Clear</button>
+        <button class="btn side red" data-row="3">Clear</button>
+        <button class="btn side red" data-row="4">Clear</button>
+        <button class="btn side red" data-row="5">Clear</button>
+        <button class="btn side red" data-row="6">Clear</button>
       </div>
     </div>
   </div>

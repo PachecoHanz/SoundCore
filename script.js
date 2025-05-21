@@ -12,7 +12,7 @@ const soundItems = document.querySelectorAll(".sound-item");
 
 const rows = 7, cols = 8;
 const buttons = [];
-const buttonSounds = {}; // Custom sound per button
+const buttonSounds = {};
 let defaultSounds = {};
 let currentStep = 0;
 let isPlaying = false;
@@ -24,7 +24,7 @@ logo.id = "logo-header";
 logo.innerHTML = `<img src="images/soundcorelogo.png" alt="SoundCore Logo">`;
 document.body.insertBefore(logo, document.body.firstChild);
 
-// ✅ FIX: Enable audio after user interaction
+// Enable audio after user interaction
 document.addEventListener("click", () => {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   if (AudioContext) {
@@ -75,7 +75,7 @@ for (let row = 0; row < rows; row++) {
   }
 }
 
-// Drag start and preview from sound library
+// Handle sound preview on hover
 soundItems.forEach(item => {
   const preview = new Audio(item.dataset.src);
 
@@ -149,7 +149,28 @@ uploadInput.addEventListener("change", e => {
 
 saveBtn.addEventListener("click", () => {
   const pattern = buttons.map(row => row.map(btn => btn.classList.contains("active") ? 1 : 0));
-  localStorage.setItem("soundcore-pattern", JSON.stringify(pattern));
+  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const name = `Pattern ${timestamp}`;
+
+  // Load all existing patterns or create a new object
+  const allPatterns = JSON.parse(localStorage.getItem("soundcore-patterns") || "{}");
+
+  // Limit to 10 max entries
+  const patternKeys = Object.keys(allPatterns);
+  if (patternKeys.length >= 10) {
+    const oldestKey = patternKeys[0]; // remove the first (oldest)
+    delete allPatterns[oldestKey];
+    const firstListItem = document.querySelector(`#saved-patterns li[data-name="${oldestKey}"]`);
+    if (firstListItem) firstListItem.remove();
+  }
+
+  // Save new pattern
+  allPatterns[name] = pattern;
+  localStorage.setItem("soundcore-patterns", JSON.stringify(allPatterns));
+
+  // Add to sidebar
+  addPatternToSidebar(name, pattern);
+
   alert("Pattern saved!");
 });
 
@@ -184,7 +205,7 @@ if (resetBtn) {
   });
 }
 
-// Assign default sound map
+// Assign default sounds
 for (let row = 0; row < rows; row++) {
   for (let col = 0; col < cols; col++) {
     const id = `btn-${row}-${col}`;
@@ -193,7 +214,128 @@ for (let row = 0; row < rows; row++) {
   }
 }
 
+// Clear all sounds and active states in a row
+document.querySelectorAll(".side-controls .btn").forEach(clearBtn => {
+  clearBtn.addEventListener("click", () => {
+    const row = parseInt(clearBtn.dataset.row);
+    if (!isNaN(row)) {
+      buttons[row].forEach(btn => {
+        const id = btn.id;
+        btn.classList.remove("active", "custom", "playing");
+        btn.textContent = "";
+        delete buttonSounds[id];
+        delete defaultSounds[id];
+      });
+    }
+  });
+});
+
+// Sidebar toggle
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.toggle("closed");
+}
+
+// Add saved pattern to sidebar with delete button
+function addPatternToSidebar(name, pattern) {
+  const list = document.getElementById("saved-patterns");
+
+  const item = document.createElement("li");
+  item.dataset.name = name;
+  item.style.display = "flex";
+  item.style.justifyContent = "space-between";
+  item.style.alignItems = "center";
+  item.style.margin = "5px 0";
+  item.style.cursor = "pointer";
+  item.style.color = "#fff";
+
+  const text = document.createElement("span");
+  text.textContent = name;
+  text.style.flex = "1";
+  text.addEventListener("click", () => {
+    pattern.forEach((row, r) => row.forEach((val, c) => {
+      buttons[r][c].classList.toggle("active", val);
+    }));
+    alert(`Loaded: ${name}`);
+  });
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "🗑";
+  deleteBtn.style.marginLeft = "10px";
+  deleteBtn.style.background = "transparent";
+  deleteBtn.style.border = "none";
+  deleteBtn.style.cursor = "pointer";
+  deleteBtn.style.color = "#fff";
+  deleteBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevent loading on delete
+    const all = JSON.parse(localStorage.getItem("soundcore-patterns") || "{}");
+    delete all[name];
+    localStorage.setItem("soundcore-patterns", JSON.stringify(all));
+    item.remove();
+  });
+
+  item.appendChild(text);
+  item.appendChild(deleteBtn);
+  list.appendChild(item);
+}
+
+// Load all saved patterns on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const saved = JSON.parse(localStorage.getItem("soundcore-patterns") || "{}");
+  for (let name in saved) {
+    addPatternToSidebar(name, saved[name]);
+  }
+});
+
+// TOP CONTROL BUTTONS FUNCTIONALITY
+const topButtons = document.querySelectorAll(".top-controls .btn");
+
+topButtons.forEach(btn => {
+  const label = btn.textContent.trim();
+
+  btn.addEventListener("click", () => {
+    switch (label) {
+      case "↑":
+        currentStep = (currentStep - 1 + cols) % cols;
+        highlightStep();
+        break;
+      case "↓":
+        currentStep = (currentStep + 1) % cols;
+        highlightStep();
+        break;
+      case "←":
+        for (let row = 0; row < rows; row++) {
+          const btn = buttons[row][currentStep];
+          btn.classList.remove("active", "custom", "playing");
+          btn.textContent = "";
+          delete buttonSounds[btn.id];
+          delete defaultSounds[btn.id];
+        }
+        break;
+      case "▶":
+        playStep();
+        break;
+      case "⏮ 8":
+        currentStep = (currentStep - 8 + cols) % cols;
+        highlightStep();
+        break;
+      case "⏭ 8":
+        currentStep = (currentStep + 8) % cols;
+        highlightStep();
+        break;
+      case "Load":
+        loadBtn.click();
+        break;
+      case "Next":
+        currentStep = (currentStep + 1) % cols;
+        highlightStep();
+        break;
+    }
+  });
+});
+
+function highlightStep() {
+  for (let row = 0; row < rows; row++) {
+    buttons[row].forEach((b, i) => b.classList.toggle("playing", i === currentStep));
+  }
 }
